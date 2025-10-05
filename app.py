@@ -276,7 +276,7 @@ def create_sidebar() -> None:
                 Adaptive route intelligence for dynamic city networks.  
                 Powered by Dijkstra's Algorithm.  
                 
-                Made by **Ayush Mittal**
+                Made by **Ayush Mittal ❤️**
                 
                 [GitHub](https://github.com/ayushmittal62) · [LinkedIn](https://www.linkedin.com/in/ayush-mittal629/)
                 """

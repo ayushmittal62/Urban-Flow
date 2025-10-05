@@ -44,7 +44,7 @@ README.md                 # Documentation (this file)
 pip install -r requirements.txt
 streamlit run app.py
 ```
-Open: http://localhost:8501
+Try it: https://urban-flow.streamlit.app/
 
 Python 3.10+ recommended (tested on 3.12).
 
