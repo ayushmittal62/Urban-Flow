@@ -84,7 +84,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-The app will open in your browser at **http://localhost:8501** (or next available port).
+Tru the app at **https://urban-flow.streamlit.app/** (or next available port).
 
 **System Requirements:**
 - Python 3.10+ (tested on 3.12)
