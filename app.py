@@ -17,6 +17,91 @@ from data_loader import (
 )
 from utils import dijkstra_shortest_path, get_path_edges
 import time
+import numpy as np
+
+
+# ---------------------------------------------------------------------------
+# Geographic Coordinates for Narwana Locations
+# ---------------------------------------------------------------------------
+# GPS coordinates (latitude, longitude) based on Narwana, Haryana layout
+# Narwana center: approximately 29.5960°N, 76.1150°E
+NARWANA_COORDINATES = {
+    'Railway Station': (29.5963, 76.1142),      # West-central area
+    'Patram Nagar': (29.5992, 76.1118),          # Northwest residential
+    'Kishan Chand Colony': (29.5985, 76.1155),   # North-central
+    'Mittal Eye Hospital': (29.5968, 76.1162),   # Central (near main road)
+    'Nehru Park': (29.5955, 76.1168),            # South-central
+    'Model Town': (29.6005, 76.1165),            # North planned area
+    'Birbal Nagar': (29.6012, 76.1135),          # Far north
+    'Bus Stand': (29.5960, 76.1145),             # Central (main transport hub)
+    'Arya Up Nagar': (29.6018, 76.1148),         # Far north-central
+    'Arya Senior Secondary School': (29.5952, 76.1172),  # South-east area
+    'S.D. Model School': (29.6025, 76.1158),     # Far north
+    'K M College': (29.5950, 76.1135),           # South-west area
+    'S D Kanya Mahavidhlya': (29.5945, 76.1182)  # Southeast (women's college)
+}
+
+
+def get_geographic_layout(road_network: dict) -> dict:
+    """
+    Convert real GPS coordinates to NetworkX graph layout positions.
+    
+    Uses actual latitude/longitude to position nodes geographically,
+    creating a map-like visualization instead of algorithmic layouts.
+    
+    Args:
+        road_network: Road network adjacency dict
+    
+    Returns:
+        Position dict for NetworkX: {node: (x, y)}
+    """
+    # Collect all coordinates
+    lats = []
+    lngs = []
+    
+    for node in road_network.keys():
+        if node in NARWANA_COORDINATES:
+            lat, lng = NARWANA_COORDINATES[node]
+            lats.append(lat)
+            lngs.append(lng)
+    
+    if not lats:
+        # Fallback if no coordinates available
+        import networkx as nx
+        return nx.spring_layout(nx.Graph(road_network), seed=42)
+    
+    # Calculate center point
+    lat_center = np.mean(lats)
+    lng_center = np.mean(lngs)
+    
+    # Calculate range to determine appropriate scale
+    lat_range = max(lats) - min(lats)
+    lng_range = max(lngs) - min(lngs)
+    
+    # Adaptive scale based on coordinate spread
+    # Target: make the visualization fill the plot area nicely
+    if lat_range > 0:
+        scale = 400 / lat_range  # Scale to fit in approximately 400 units
+    else:
+        scale = 10000
+    
+    pos = {}
+    for node in road_network.keys():
+        if node in NARWANA_COORDINATES:
+            lat, lng = NARWANA_COORDINATES[node]
+            
+            # Convert to Cartesian coordinates centered at origin
+            # X = longitude (East-West), Y = latitude (North-South)
+            # Apply cosine correction for longitude at this latitude
+            x = (lng - lng_center) * scale * np.cos(np.radians(lat_center))
+            y = (lat - lat_center) * scale
+            
+            pos[node] = (x, y)
+        else:
+            # If coordinate missing, place at origin
+            pos[node] = (0, 0)
+    
+    return pos
 
 
 # ---------------------------------------------------------------------------
@@ -35,7 +120,7 @@ st.markdown(
     html, body, [class*="css"]  {
         font-size: 0.9rem !important;
     }
-    h1 { font-size: 2.05rem !important; font-weight:600; }
+    h1 { font-size: 3.2rem !important; font-weight:700; }
     h2 { font-size: 1.45rem !important; }
     h3 { font-size: 1.15rem !important; }
     section.main > div { padding-top: 1rem; }
@@ -47,6 +132,7 @@ st.markdown(
     .route-path { font-size:.95rem; line-height:1.4; letter-spacing:.5px; color:#E2E8F0; word-break:break-word; }
     .route-time { font-size:1.25rem; font-weight:600; color:#38bdf8; display:inline-block; margin:.25rem 0 .5rem 0; }
     .small-note { font-size:.75rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; }
+    .subtitle-text { font-size: 1.15rem !important; line-height: 1.6; color: #94a3b8; }
     @media (min-width:1200px){ .route-path { font-size:1rem; } .route-time { font-size:1.35rem; } }
     .step-badge {display:inline-block; background:#1E88E5; color:#fff; padding:2px 8px; border-radius:12px; font-size:.65rem; margin-right:6px; letter-spacing:.5px; }
     .sidebar .stButton button { background:#1E88E520 !important; }
@@ -118,10 +204,19 @@ def create_network_graph(
         pos = nx.circular_layout(G)
     elif layout == "shell":
         pos = nx.shell_layout(G)
+    elif layout == "geographic":
+        pos = get_geographic_layout(road_network)
     else:
         pos = nx.spring_layout(G, seed=42)
+    
     fig, ax = plt.subplots(figsize=(8, 6))
-    ax.set_title("City Traffic Network", fontsize=14, pad=12)
+    
+    # Update title based on layout
+    if layout == "geographic":
+        ax.set_title("Narwana Road Network (Geographic View)", fontsize=14, pad=12)
+    else:
+        ax.set_title("Narwana Road Network", fontsize=14, pad=12)
+    
     ax.axis("off")
 
     # Edge weights for styling
@@ -140,7 +235,7 @@ def create_network_graph(
     if color_edges and weights:
         # Map weights to a blue gradient (lighter = shorter / faster)
         import matplotlib as mpl
-        cmap = mpl.cm.get_cmap("Blues")
+        cmap = plt.get_cmap("Blues")
         norm = mpl.colors.Normalize(vmin=min_w, vmax=max_w)
         colors = [cmap(norm(w)) for w in weights]
     else:
@@ -292,8 +387,9 @@ def main() -> None:
 
     st.title("🚦 UrbanFlow")
     st.markdown(
-        """A simple, clear tool to plan the fastest route between two locations.
-        Adjust traffic weights to simulate congestion and re‑evaluate paths."""
+        """<div class='subtitle-text'>A simple, clear tool to plan the fastest route between two locations.
+        Adjust traffic weights to simulate congestion and re‑evaluate paths.</div>""",
+        unsafe_allow_html=True
     )
     st.divider()
 
@@ -357,7 +453,8 @@ def main() -> None:
         st.subheader("🌐 Network Visualizer")
         with st.expander("Display Settings", expanded=False):
             layout = st.selectbox(
-                "Layout", ["spring", "kamada", "circular", "shell"], index=0, help="Graph layout algorithm"
+                "Layout", ["geographic", "spring", "kamada", "circular", "shell"], index=0, 
+                help="Graph layout algorithm. 'Geographic' uses real GPS coordinates from Narwana."
             )
             c1, c2, c3 = st.columns(3)
             with c1:

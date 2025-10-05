@@ -23,69 +23,96 @@ def get_road_network() -> Dict[str, Dict[str, int]]:
     - Weight represents approximate travel time in minutes
     """
     
-    # Define the road network with 10 major city locations
+    # Define the road network for Narwana, Haryana
+    # Narwana is a town in Jind district (29.5960° N, 76.1150° E)
+    # Travel times are estimated based on typical small town geography
+    # NOTE: For accurate distances, run: python fetch_distances.py with Google Maps API key
+    # Or measure manually using Google Maps and update these values
+    
     road_network = {
-        'Downtown': {
-            'Central Park': 5,
-            'Shopping Mall': 8,
-            'Airport': 25
+        'Railway Station': {
+            'Bus Stand': 4,
+            'Patram Nagar': 3,
+            'K M College': 5,
+            'Arya Up Nagar': 6
         },
-        'Central Park': {
-            'Downtown': 5,
-            'Shopping Mall': 3,
-            'University': 7,
-            'Hospital': 6
+        'Patram Nagar': {
+            'Railway Station': 3,
+            'Kishan Chand Colony': 3,
+            'Bus Stand': 4,
+            'Birbal Nagar': 4
         },
-        'Shopping Mall': {
-            'Downtown': 8,
-            'Central Park': 3,
-            'Business District': 4,
-            'University': 5
+        'Kishan Chand Colony': {
+            'Patram Nagar': 3,
+            'Mittal Eye Hospital': 3,
+            'Model Town': 4,
+            'Nehru Park': 5
         },
-        'University': {
-            'Central Park': 7,
-            'Shopping Mall': 5,
-            'Hospital': 4,
-            'School': 6
+        'Mittal Eye Hospital': {
+            'Kishan Chand Colony': 3,
+            'Nehru Park': 2,
+            'Bus Stand': 5,
+            'S D Kanya Mahavidhlya': 4
         },
-        'Hospital': {
-            'Central Park': 6,
-            'University': 4,
-            'Residential Area': 5,
-            'Airport': 15
+        'Nehru Park': {
+            'Mittal Eye Hospital': 2,
+            'Kishan Chand Colony': 5,
+            'Model Town': 3,
+            'Arya Senior Secondary School': 4,
+            'Bus Stand': 4
         },
-        'Business District': {
-            'Shopping Mall': 4,
-            'School': 3,
-            'Station': 7
+        'Model Town': {
+            'Nehru Park': 3,
+            'Kishan Chand Colony': 4,
+            'Birbal Nagar': 4,
+            'Arya Up Nagar': 5
         },
-        'School': {
-            'University': 6,
-            'Business District': 3,
-            'Station': 5,
-            'Industrial Zone': 8
+        'Birbal Nagar': {
+            'Model Town': 4,
+            'Patram Nagar': 4,
+            'Arya Up Nagar': 3,
+            'S.D. Model School': 5
         },
-        'Station': {
-            'Business District': 7,
-            'School': 5,
-            'Airport': 12,
-            'Industrial Zone': 6
+        'Bus Stand': {
+            'Railway Station': 4,
+            'Patram Nagar': 4,
+            'Nehru Park': 4,
+            'Mittal Eye Hospital': 5,
+            'Arya Senior Secondary School': 6,
+            'K M College': 6
         },
-        'Industrial Zone': {
-            'School': 8,
-            'Station': 6,
-            'Residential Area': 9
+        'Arya Up Nagar': {
+            'Railway Station': 6,
+            'Model Town': 5,
+            'Birbal Nagar': 3,
+            'S.D. Model School': 4,
+            'K M College': 5
         },
-        'Residential Area': {
-            'Hospital': 5,
-            'Industrial Zone': 9,
-            'Airport': 10
+        'Arya Senior Secondary School': {
+            'Nehru Park': 4,
+            'Bus Stand': 6,
+            'S.D. Model School': 3,
+            'S D Kanya Mahavidhlya': 5
         },
-        'Airport': {
-            'Downtown': 25,
-            'Hospital': 15,
-            'Station': 12,
-            'Residential Area': 10
+        'S.D. Model School': {
+            'Arya Senior Secondary School': 3,
+            'Birbal Nagar': 5,
+            'Arya Up Nagar': 4,
+            'K M College': 4,
+            'S D Kanya Mahavidhlya': 6
+        },
+        'K M College': {
+            'Railway Station': 5,
+            'Bus Stand': 6,
+            'Arya Up Nagar': 5,
+            'S.D. Model School': 4,
+            'S D Kanya Mahavidhlya': 3
+        },
+        'S D Kanya Mahavidhlya': {
+            'K M College': 3,
+            'S.D. Model School': 6,
+            'Arya Senior Secondary School': 5,
+            'Mittal Eye Hospital': 4
         }
     }
     
