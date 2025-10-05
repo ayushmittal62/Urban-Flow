@@ -115,21 +115,6 @@ Optimizations: early destination break, visited set, heap-based relaxation.
 - Adjustable node label font size (slider)
 
 ---
-
-## 🧪 Testing (Planned / Legacy)
-A prior test file (`test_traffic_predictor.py`) covered loading, path correctness, and weight updates. If you reintroduce it:
-
-```bash
-python -m pytest -q
-```
-
-Suggested new tests:
-- Dynamic node addition reflected in planner
-- Weight update synchronization (bidirectional)
-- No path scenarios after edge removals
-
----
-
 ## 🛠 Configuration & Customization
 Area | How to Change
 -----|---------------
