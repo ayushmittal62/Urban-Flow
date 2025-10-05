@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#2196F3"           # Accent blue
+backgroundColor = "#0F172A"        # Dark navy (page background)
+secondaryBackgroundColor = "#1E293B"  # Panel / sidebar background
+textColor = "#E2E8F0"              # Light gray for readability
+font = "sans serif"
