@@ -84,7 +84,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Tru the app at **https://urban-flow.streamlit.app/**
+Try the app at **https://urban-flow.streamlit.app/**
 
 **System Requirements:**
 - Python 3.10+ (tested on 3.12)
