@@ -533,7 +533,7 @@ def main() -> None:
         """
         <div style='text-align:center; color:#7f8c8d; padding:16px 0;'>
             <p style='margin:4px 0;'>🌐 UrbanFlow</p>
-            <p style='margin:4px 0; font-size:12px;'>Adaptive route intelligence for dynamic city networks · Made by <strong>Ayush Mittal</strong></p>
+            <p style='margin:4px 0; font-size:12px;'>Adaptive route intelligence for dynamic city networks · Made by <strong>Ayush Mittal ❤️</strong></p>
             <p style='margin:4px 0; font-size:12px;'>
                 <a href='https://github.com/ayushmittal62' target='_blank'>GitHub</a> ·
                 <a href='https://www.linkedin.com/in/ayush-mittal629/' target='_blank'>LinkedIn</a>
